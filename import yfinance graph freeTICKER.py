@@ -13,6 +13,15 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
+hide_footer = """
+<style>
+footer {visibility: hidden;}
+footer:after {content:''; display:block; visibility:hidden;}
+</style>
+"""
+st.markdown(hide_footer, unsafe_allow_html=True)
+
+
 # ============ 側邊欄 - 用戶輸入 ============
 st.sidebar.header("⚙️ 分析參數設定")
 
@@ -367,6 +376,7 @@ if st.session_state.last_result:
         file_name=f"{ticker_symbol}_stock_data_{start_date}_{end_date}.csv",
         mime="text/csv"
     )
+
 
 
 
