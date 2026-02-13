@@ -230,7 +230,7 @@ def plot_stock_charts(stock_data, ticker_symbol, start_date, end_date, annual_di
             "bgcolor": "rgba(255, 255, 255, 0.8)",
             "bordercolor": "gray",
             "borderwidth": 1
-        }
+        },
         margin=dict(t=100, b=80) # 🔑 增加上下距離
     )
 
@@ -363,6 +363,7 @@ if st.session_state.last_result:
         file_name=f"{ticker_symbol}_stock_data_{start_date}_{end_date}.csv",
         mime="text/csv"
     )
+
 
 
 
