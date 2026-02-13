@@ -9,16 +9,19 @@ from plotly.subplots import make_subplots
 st.set_page_config(page_title="股票分析工具", layout="wide")
 st.title("📈 股票價格與股息率分析")
 
-# 隱藏 Streamlit 預設的右下角連結
+# 隱藏 Streamlit 預設的右下角連結與徽章
 hide_streamlit_style = """
     <style>
     #MainMenu {visibility: hidden;}     /* 隱藏左上角的 Streamlit 菜單 */
-    footer {visibility: hidden;}       /* 隱藏右下角的 footer */
-    .viewerBadge_container__1QSob {display: none;}  /* 隱藏右下角的圖示 */
+    footer {visibility: hidden;}       /* 隱藏底部的 footer */
+    header {visibility: hidden;}       /* 隱藏頂部的 header */
+    .viewerBadge_container__1QSob {display: none;}  /* 隱藏右下角徽章 */
     .stDeployButton {display: none;}   /* 隱藏右下角的部署按鈕 */
+    .css-164nlkn.e1fqkh3o3 {display: none;} /* 有些版本的右下角提示 */
     </style>
 """
 st.markdown(hide_streamlit_style, unsafe_allow_html=True)
+
 
 
 # ============ 側邊欄 - 用戶輸入 ============
@@ -375,6 +378,7 @@ if st.session_state.last_result:
         file_name=f"{ticker_symbol}_stock_data_{start_date}_{end_date}.csv",
         mime="text/csv"
     )
+
 
 
 
