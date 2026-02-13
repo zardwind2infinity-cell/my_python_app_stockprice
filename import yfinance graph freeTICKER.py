@@ -202,7 +202,7 @@ def plot_stock_charts(stock_data, ticker_symbol, start_date, end_date, annual_di
     if min_yield > 2.0:
         y_axis_min = 2.0
 
-    # ✅ 修正：使用正確的參數格式
+    # ✅ 修正：移除寬度設定，讓 Streamlit 自動調整
     fig.update_layout(
         title={
             "text": f'{ticker_symbol} Stock Price & Dividend Yield Analysis<br>({start_date} to {end_date})',
@@ -220,7 +220,7 @@ def plot_stock_charts(stock_data, ticker_symbol, start_date, end_date, annual_di
         hovermode='x unified',
         plot_bgcolor='white',
         height=700,
-        width=1400,
+        # ❌ 移除 width=1400，Streamlit 會自動處理
         legend={
             "orientation": "h",
             "yanchor": "bottom",
@@ -233,7 +233,7 @@ def plot_stock_charts(stock_data, ticker_symbol, start_date, end_date, annual_di
         }
     )
 
-    # ✅ 修正：使用 title_font 而非 titlefont
+    # 更新 Y 軸配置
     fig.update_yaxes(
         title_text="Stock Price",
         title_font={"size": 14, "color": "#2E86AB"},
@@ -251,15 +251,17 @@ def plot_stock_charts(stock_data, ticker_symbol, start_date, end_date, annual_di
         range=[y_axis_min, y_axis_max]
     )
 
-    # 保存為 HTML 文件
+    # ❌ 移除 fig.show()，Streamlit 會在 st.plotly_chart() 中處理
+    # 保存為 HTML 文件（可選）
     date_range = f"{start_date.strftime('%Y%m%d')}_to_{end_date.strftime('%Y%m%d')}"
     html_filename = f'{ticker_symbol}_interactive_chart_{date_range}.html'
-    fig.write_html(html_filename)
-    print(f"\n📊 Interactive chart saved to: {html_filename}")
-    print(f"💡 Open the file in your browser to interact with the chart!")
+    try:
+        fig.write_html(html_filename)
+        print(f"✅ Interactive chart saved to: {html_filename}")
+    except Exception as e:
+        print(f"⚠️ Could not save HTML file: {e}")
 
-    # 顯示圖表
-    fig.show()
+    return fig  # ✅ 返回圖表物件而不是顯示它
 
 
 def fetch_and_analyze(ticker_symbol, start_date, end_date):
@@ -360,5 +362,6 @@ if st.session_state.last_result:
         file_name=f"{ticker_symbol}_stock_data_{start_date}_{end_date}.csv",
         mime="text/csv"
     )
+
 
 
