@@ -92,9 +92,9 @@ def plot_stock_charts(stock_data, ticker_symbol, start_date, end_date, annual_di
             line=dict(width=0),
             fillcolor='rgba(162, 59, 114, 0.15)',
             name='Daily High-Low Range',
-            hovertemplate='<b>日期</b>: %{x|%Y-%m-%d}<br>' +
-                         '<b>最高價</b>: %{customdata[0]:.2f}<br>' +
-                         '<b>最低價</b>: %{y:.2f}<br>' +
+            hovertemplate='<b>Date</b>: %{x|%Y-%m-%d}<br>' +
+                         '<b>High</b>: %{customdata[0]:.2f}<br>' +
+                         '<b>Low</b>: %{y:.2f}<br>' +
                          '<extra></extra>',
             customdata=stock_data[['High']].values
         ),
@@ -107,10 +107,10 @@ def plot_stock_charts(stock_data, ticker_symbol, start_date, end_date, annual_di
             x=stock_data.index,
             y=stock_data['Close'],
             mode='lines',
-            name='收盤價',
+            name='Close Price',
             line=dict(color='#2E86AB', width=3),
-            hovertemplate='<b>日期</b>: %{x|%Y-%m-%d}<br>' +
-                         '<b>收盤價</b>: %{y:.2f}<br>' +
+            hovertemplate='<b>Date</b>: %{x|%Y-%m-%d}<br>' +
+                         '<b>Close</b>: %{y:.2f}<br>' +
                          '<extra></extra>'
         ),
         secondary_y=False
@@ -123,21 +123,37 @@ def plot_stock_charts(stock_data, ticker_symbol, start_date, end_date, annual_di
     min_date = stock_data['Close'].idxmin()
 
     fig.add_annotation(
-        x=max_date, y=max_price,
-        text=f"最高: {max_price:.2f}",
-        showarrow=True, arrowhead=2, arrowcolor='#2E86AB',
-        ax=40, ay=-40, bgcolor='yellow', opacity=0.8,
-        bordercolor='#2E86AB', borderwidth=2,
-        font=dict(size=11, color='black'), yref='y'
+        x=max_date,
+        y=max_price,
+        text=f"High: {max_price:.2f}",
+        showarrow=True,
+        arrowhead=2,
+        arrowcolor='#2E86AB',
+        ax=40,
+        ay=-40,
+        bgcolor='yellow',
+        opacity=0.8,
+        bordercolor='#2E86AB',
+        borderwidth=2,
+        font=dict(size=11, color='black'),
+        yref='y'
     )
 
     fig.add_annotation(
-        x=min_date, y=min_price,
-        text=f"最低: {min_price:.2f}",
-        showarrow=True, arrowhead=2, arrowcolor='#2E86AB',
-        ax=40, ay=40, bgcolor='lightblue', opacity=0.8,
-        bordercolor='#2E86AB', borderwidth=2,
-        font=dict(size=11, color='black'), yref='y'
+        x=min_date,
+        y=min_price,
+        text=f"Low: {min_price:.2f}",
+        showarrow=True,
+        arrowhead=2,
+        arrowcolor='#2E86AB',
+        ax=40,
+        ay=40,
+        bgcolor='lightblue',
+        opacity=0.8,
+        bordercolor='#2E86AB',
+        borderwidth=2,
+        font=dict(size=11, color='black'),
+        yref='y'
     )
 
     # === 添加股息率數據（右側Y軸）===
@@ -146,12 +162,12 @@ def plot_stock_charts(stock_data, ticker_symbol, start_date, end_date, annual_di
             x=stock_data.index,
             y=stock_data['DIVIDEND YIELD'],
             mode='lines',
-            name=f'股息率 ({dividend_year}年數據)',
+            name=f'Dividend Yield ({dividend_year} data)',
             line=dict(color='#F18F01', width=3, dash='dash'),
             fill='tozeroy',
             fillcolor='rgba(241, 143, 1, 0.2)',
-            hovertemplate='<b>日期</b>: %{x|%Y-%m-%d}<br>' +
-                         '<b>股息率</b>: %{y:.2f}%<br>' +
+            hovertemplate='<b>Date</b>: %{x|%Y-%m-%d}<br>' +
+                         '<b>Dividend Yield</b>: %{y:.2f}%<br>' +
                          '<extra></extra>'
         ),
         secondary_y=True
@@ -165,14 +181,15 @@ def plot_stock_charts(stock_data, ticker_symbol, start_date, end_date, annual_di
                 x=stock_data.index,
                 y=[avg_yield] * len(stock_data.index),
                 mode='lines',
-                name=f'平均股息率: {avg_yield:.2f}%',
+                name=f'Avg Yield: {avg_yield:.2f}%',
                 line=dict(color='red', width=2.5, dash='dot'),
-                hovertemplate='<b>平均股息率</b>: %{y:.2f}%<br><extra></extra>'
+                hovertemplate='<b>Average Yield</b>: %{y:.2f}%<br>' +
+                             '<extra></extra>'
             ),
             secondary_y=True
         )
 
-    # === 計算右軸動態範圍 ===
+    # === 計算右軸的動態範圍 ===
     dividend_yield_data = stock_data['DIVIDEND YIELD']
     min_yield = dividend_yield_data.min()
     max_yield = dividend_yield_data.max()
@@ -185,55 +202,65 @@ def plot_stock_charts(stock_data, ticker_symbol, start_date, end_date, annual_di
     if min_yield > 2.0:
         y_axis_min = 2.0
 
-    # === 佈局設定 ===
+    # ✅ 修正：使用正確的參數格式
     fig.update_layout(
-        title=dict(
-            text=f'{ticker_symbol} 股價與股息率分析<br>({start_date} 至 {end_date})',
-            font=dict(size=18, color='black'),
-            x=0.5, xanchor='center'
-        ),
-        xaxis=dict(
-            title='日期',
-            titlefont=dict(size=14, color='black'),
-            showgrid=True,
-            gridcolor='rgba(128, 128, 128, 0.2)',
-            gridwidth=1
-        ),
+        title={
+            "text": f'{ticker_symbol} Stock Price & Dividend Yield Analysis<br>({start_date} to {end_date})',
+            "font": {"size": 18, "color": "black"},
+            "x": 0.5,
+            "xanchor": "center"
+        },
+        xaxis={
+            "title": "Date",
+            "title_font": {"size": 14, "color": "black"},
+            "showgrid": True,
+            "gridcolor": "rgba(128, 128, 128, 0.2)",
+            "gridwidth": 1
+        },
         hovermode='x unified',
         plot_bgcolor='white',
         height=700,
         width=1400,
-        legend=dict(
-            orientation="h",
-            yanchor="bottom",
-            y=1.02,
-            xanchor="right",
-            x=1,
-            bgcolor='rgba(255, 255, 255, 0.8)',
-            bordercolor='gray',
-            borderwidth=1
-        )
+        legend={
+            "orientation": "h",
+            "yanchor": "bottom",
+            "y": 1.02,
+            "xanchor": "right",
+            "x": 1,
+            "bgcolor": "rgba(255, 255, 255, 0.8)",
+            "bordercolor": "gray",
+            "borderwidth": 1
+        }
     )
 
-    # Y軸設定
+    # ✅ 修正：使用 title_font 而非 titlefont
     fig.update_yaxes(
-        title_text="股價",
-        titlefont=dict(size=14, color='#2E86AB'),
-        tickfont=dict(color='#2E86AB'),
+        title_text="Stock Price",
+        title_font={"size": 14, "color": "#2E86AB"},
+        tickfont={"color": "#2E86AB"},
         showgrid=True,
         gridcolor='rgba(128, 128, 128, 0.2)',
         secondary_y=False
     )
 
     fig.update_yaxes(
-        title_text="股息率 (%)",
-        titlefont=dict(size=14, color='#F18F01'),
-        tickfont=dict(color='#F18F01'),
+        title_text="Dividend Yield (%)",
+        title_font={"size": 14, "color": "#F18F01"},
+        tickfont={"color": "#F18F01"},
         secondary_y=True,
         range=[y_axis_min, y_axis_max]
     )
 
-    return fig
+    # 保存為 HTML 文件
+    date_range = f"{start_date.strftime('%Y%m%d')}_to_{end_date.strftime('%Y%m%d')}"
+    html_filename = f'{ticker_symbol}_interactive_chart_{date_range}.html'
+    fig.write_html(html_filename)
+    print(f"\n📊 Interactive chart saved to: {html_filename}")
+    print(f"💡 Open the file in your browser to interact with the chart!")
+
+    # 顯示圖表
+    fig.show()
+
 
 def fetch_and_analyze(ticker_symbol, start_date, end_date):
     """獲取數據並進行分析"""
@@ -333,4 +360,5 @@ if st.session_state.last_result:
         file_name=f"{ticker_symbol}_stock_data_{start_date}_{end_date}.csv",
         mime="text/csv"
     )
+
 
