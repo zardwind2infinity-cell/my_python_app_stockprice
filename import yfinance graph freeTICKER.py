@@ -6,23 +6,12 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
 # 設定頁面配置
-st.set_page_config( page_title="股票分析工具", page_icon="📊", layout="wide", initial_sidebar_state="expanded" )
 st.title("📈 股票價格與股息率分析")
-
-# 隱藏 Streamlit 預設的右下角連結與徽章
-hide_streamlit_style = """
-    <style>
-    #MainMenu {visibility: hidden;}     /* 隱藏左上角的 Streamlit 菜單 */
-    footer {visibility: hidden;}       /* 隱藏底部的 footer */
-    header {visibility: hidden;}       /* 隱藏頂部的 header */
-    .viewerBadge_container__1QSob {display: none;}  /* 隱藏右下角徽章 */
-    .stDeployButton {display: none;}   /* 隱藏右下角的部署按鈕 */
-    .css-164nlkn.e1fqkh3o3 {display: none;} /* 有些版本的右下角提示 */
-    </style>
-"""
-st.markdown(hide_streamlit_style, unsafe_allow_html=True)
-
-
+st.set_page_config(
+    page_title="股票分析工具",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
 
 # ============ 側邊欄 - 用戶輸入 ============
 st.sidebar.header("⚙️ 分析參數設定")
@@ -378,6 +367,7 @@ if st.session_state.last_result:
         file_name=f"{ticker_symbol}_stock_data_{start_date}_{end_date}.csv",
         mime="text/csv"
     )
+
 
 
 
