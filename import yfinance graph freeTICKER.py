@@ -224,14 +224,14 @@ def plot_stock_charts(stock_data, ticker_symbol, start_date, end_date, annual_di
         legend={
             "orientation": "h",
             "yanchor": "bottom",
-            "y": 1.02,
+            "y": 1.08,
             "xanchor": "right",
-            "x": 1,
+            "x": 0.85,
             "bgcolor": "rgba(255, 255, 255, 0.8)",
             "bordercolor": "gray",
             "borderwidth": 1
         },
-        margin=dict(t=200, b=150) # 🔑 增加上下距離
+        margin=dict(t=200 ) # 🔑 增加上下距離
     )
 
     # 更新 Y 軸配置
@@ -363,6 +363,7 @@ if st.session_state.last_result:
         file_name=f"{ticker_symbol}_stock_data_{start_date}_{end_date}.csv",
         mime="text/csv"
     )
+
 
 
 
