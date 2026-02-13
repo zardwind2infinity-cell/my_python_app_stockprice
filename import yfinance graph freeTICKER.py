@@ -6,7 +6,7 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
 # 設定頁面配置
-st.set_page_config(page_title="股票分析工具", layout="wide")
+st.set_page_config( page_title="股票分析工具", page_icon="📊", layout="wide", initial_sidebar_state="expanded" )
 st.title("📈 股票價格與股息率分析")
 
 # 隱藏 Streamlit 預設的右下角連結與徽章
@@ -378,6 +378,7 @@ if st.session_state.last_result:
         file_name=f"{ticker_symbol}_stock_data_{start_date}_{end_date}.csv",
         mime="text/csv"
     )
+
 
 
 
