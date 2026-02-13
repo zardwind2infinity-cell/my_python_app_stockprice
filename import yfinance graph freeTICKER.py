@@ -163,7 +163,7 @@ def plot_stock_charts(stock_data, ticker_symbol, start_date, end_date, annual_di
             y=stock_data['DIVIDEND YIELD'],
             mode='lines',
             name=f'Dividend Yield ({dividend_year} data)',
-            line=dict(color='#F18F01', width=3, dash='dash'),
+            line=dict(color='#F18F01', width=3, dash='2,2'),
             fill='tozeroy',
             fillcolor='rgba(241, 143, 1, 0.2)',
             hovertemplate='<b>Date</b>: %{x|%Y-%m-%d}<br>' +
@@ -363,6 +363,7 @@ if st.session_state.last_result:
         file_name=f"{ticker_symbol}_stock_data_{start_date}_{end_date}.csv",
         mime="text/csv"
     )
+
 
 
 
